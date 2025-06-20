@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para ti, mi luna 🌙</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .message-box {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 15px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 22px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 2;
+    }
+
+    .message-box.show {
+      opacity: 1;
+    }
+
+    .start-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ff69b4;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 20px #ff69b4;
+      z-index: 5;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Botón para iniciar música -->
+<button class="start-btn" id="startBtn">Haz clic para comenzar 🌙</button>
+
+<!-- Mensajes -->
+<div class="message-box" id="messageBox"></div>
+
+<!-- Corazones -->
+<canvas id="heartsCanvas"></canvas>
+
+<!-- Música local -->
+<audio id="bgMusic" loop>
+  <source src="Marc Seguí, Pol Granch - Tiroteo (Videoclip Oficial).mp3.mp3" type="audio/mp3">
+  Tu navegador no soporta audio HTML5 😢
+</audio>
+
+<script>
+  const messages = [
+    "Te amo, mi luna 🌙",
+    "Eres mi todo, mi luna 🌙",
+    "Mi razón de sonreír eres tú, mi luna 🌙",
+    "Cada latido es por ti, mi luna 🌙",
+    "Sin ti no hay cielo, mi luna 🌙",
+    "Eres mi sueño hecho realidad, mi luna 🌙",
+    "Todo tiene sentido contigo, mi luna 🌙",
+    "Tú + yo = infinito, mi luna 🌙"
+  ];
+
+  const messageBox = document.getElementById("messageBox");
+  const startBtn = document.getElementById("startBtn");
+  const audio = document.getElementById("bgMusic");
+  const canvas = document.getElementById("heartsCanvas");
+  const ctx = canvas.getContext('2d');
+
+  let currentMessage = 0;
+  let hearts = [];
+
+  function showNextMessage() {
+    messageBox.classList.remove("show");
+    setTimeout(() => {
+      messageBox.textContent = messages[currentMessage];
+      messageBox.classList.add("show");
+      currentMessage = (currentMessage + 1) % messages.length;
+    }, 1000);
+  }
+
+  function startExperience() {
+    startBtn.style.display = 'none';
+    audio.play();
+    showNextMessage();
+    setInterval(showNextMessage, 4000);
+    animateHearts();
+  }
+
+  startBtn.addEventListener('click', startExperience);
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function createHeart() {
+    return {
+      x: Math.random() * canvas.width,
+      y: -10,
+      size: 10 + Math.random() * 10,
+      speed: 1 + Math.random() * 2,
+      color: `hsl(${Math.random() * 360}, 100%, 70%)`
+    };
+  }
+
+  function drawHeart(x, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+    ctx.bezierCurveTo(x - size, y + size, x, y + size * 1.5, x, y + size * 2);
+    ctx.bezierCurveTo(x, y + size * 1.5, x + size, y + size, x + size, y);
+    ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+    ctx.fill();
+  }
+
+  function animateHearts() {
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (Math.random() < 0.2) {
+        hearts.push(createHeart());
+      }
+
+      hearts.forEach((heart, index) => {
+        heart.y += heart.speed;
+        drawHeart(heart.x, heart.y, heart.size, heart.color);
+        if (heart.y > canvas.height + 20) {
+          hearts.splice(index, 1);
+        }
+      });
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  }
+</script>
+
+</body>
+</html>
