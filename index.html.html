@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Feliz cumpleaños, mi Lunita</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #2c003e, #1e1b2e);
+      color: #fff8e7;
+      text-align: center;
+      padding: 50px 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      color: #ffe4b5;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .frase {
+      font-size: 1.5em;
+      margin: 40px auto;
+      max-width: 600px;
+      transition: opacity 0.5s ease-in-out;
+      color: #ffd;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      background-color: #800000;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #a52a2a;
+    }
+
+    audio {
+      margin-top: 30px;
+      outline: none;
+    }
+
+    .corazon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff0000aa;
+      transform: rotate(45deg);
+      animation: flotar 10s linear infinite;
+    }
+
+    .corazon::before,
+    .corazon::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff0000aa;
+      border-radius: 50%;
+    }
+
+    .corazon::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .corazon::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes flotar {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Feliz cumpleaños, mi Lunita 🎂🌙</h1>
+  <div class="frase" id="frase">
+    Eres el brillo que ilumina mis días, mi luna
+  </div>
+  <button onclick="cambiarFrase()">💖 Ver otra frase</button>
+
+  <!-- Reproductor de música local -->
+  <audio controls autoplay loop>
+    <source src="tiroteo.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <script>
+    const frases = [
+      "Eres el brillo que ilumina mis días, mi luna",
+      "Tu sonrisa es mi lugar seguro, mi luna",
+      "Nada es más bonito que verte feliz, mi luna",
+      "Cada momento contigo es un regalo, mi luna",
+      "Cuando me miras, todo se calma, mi luna",
+      "Contigo aprendí lo que es amar de verdad, mi luna",
+      "Si el universo hablara de belleza, hablaría de ti, mi luna",
+      "No necesito estrellas si ya te tengo a ti, mi luna",
+      "Gracias por existir y por elegirme, mi luna",
+      "Eres mi casualidad favorita, mi luna"
+    ];
+
+    let indice = 0;
+    function cambiarFrase() {
+      const frase = document.getElementById('frase');
+      frase.style.opacity = 0;
+      setTimeout(() => {
+        indice = (indice + 1) % frases.length;
+        frase.innerText = frases[indice];
+        frase.style.opacity = 1;
+      }, 500);
+    }
+
+    // Corazones flotando
+    for (let i = 0; i < 30; i++) {
+      const corazon = document.createElement('div');
+      corazon.classList.add('corazon');
+      corazon.style.left = Math.random() * 100 + 'vw';
+      corazon.style.animationDuration = (5 + Math.random() * 5) + 's';
+      corazon.style.opacity = Math.random();
+      document.body.appendChild(corazon);
+    }
+  </script>
+</body>
+</html>
